@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Dabao CMS{% endblock %}
+
+{% block content %}
+
+    <h1>打包</h1>
+    <p class="font-italic">This is just a list of things I'm supposed to dabao, I don't really track what has been downloaded and where it is along the pipeline.</p>
+
+    {% if docker_image_list %}
+    <h2>Docker Images</h2>
+    <ul>
+        {% for object in docker_image_list %}
+            <li><a href="#">{{object}}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if pivotal_product_list %}
+    <h2>Pivotal Products</h2>
+    <ul>
+        {% for object in pivotal_product_list %}
+            <li><a href="#">{{ object }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+{% endblock %}

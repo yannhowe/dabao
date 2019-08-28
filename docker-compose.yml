@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+
+  nginx:
+    restart: always
+    build: ./nginx
+    volumes:
+      - "dabao-cms-static:/usr/src/app/static"
+    ports:
+      - "80:80"
+
+  dabao-cms:
+    restart: always
+    build: ./dabao
+    volumes:
+      # Production
+      - dabao-cms:/usr/src/app
+      # Development
+      #- ./dabao/:/usr/src/app
+    env_file: .env
+    command: /usr/local/bin/gunicorn dabao.wsgi:application -w 2 -b :8000 --chdir /usr/src/app
+
+  dabao-cms-static:
+    build: ./dabao
+    volumes:
+      - "dabao-cms-static:/usr/src/app/static"
+    env_file: .env
+    command: python /usr/src/app/manage.py collectstatic --noinput
+
+  redis:
+    image: redis:5
+
+  minio:
+    hostname: minio
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+    volumes:
+      - 'minio-data:/data'
+      - 'minio-config:/root/.minio'
+    env_file: .env
+    command: server /data
+
+  celery_worker:
+    build: ./dabao
+    env_file: .env
+    depends_on:
+      - dabao-cms
+      - redis
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: on-failure
+    command: sh -c "cd /usr/src/app/ && celery -A dabao worker -l info --scheduler django"
+
+  celery_beat:
+    build: ./dabao
+    env_file: .env
+    depends_on:
+      - dabao-cms
+      - redis
+    restart: on-failure
+    command: sh -c "cd /usr/src/app/ && celery -A dabao beat -l info --scheduler django"
+
+volumes:
+  dabao-cms:
+  minio-data:
+  minio-config:
+  dabao-cms-static:

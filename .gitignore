@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Project Stuff
+dabao-pcf/product-files
+minio
+static
+.DS_Store
