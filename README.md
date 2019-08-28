@@ -1,5 +1,9 @@
-# dabao
-Da bao (打包) internet resources for your air-gapped environment.
+# 打包 (dǎ bāo)
+打包 (dǎ bāo) internet resources for your air-gapped environment.
+
+:white_check_mark: GUI-based
+
+:white_check_mark: (Reasonably) Easy Setup
 
 Supports:
 - [x]  [Pivotal Network](https://network.pivotal.io/) Stemcells and Releases
@@ -9,6 +13,7 @@ Supports:
 - [ ]  NPM Packages
 
 # Quickstart
+Make sure you have [docker](https://docs.docker.com/install/), [docker-compose](https://docs.docker.com/compose/install/) & [MC](https://docs.min.io/docs/minio-client-quickstart-guide.html).
 ```
 # Clone Repo
 git clone https://github.com/yannhowe/dabao.git
@@ -16,19 +21,19 @@ git clone https://github.com/yannhowe/dabao.git
 # Fill up the .env.example file and rename to .env
 mv .env.example .env
 
-# Get everything up!
-docker-compose up -d
-
 # Initialise database & create admin user
 docker-compose run --rm dabao-cms python /usr/src/app/manage.py makemigrations
 docker-compose run --rm dabao-cms python /usr/src/app/manage.py migrate
 docker-compose run --rm dabao-cms python /usr/src/app/manage.py loaddata initial_data.json
 docker-compose run --rm dabao-cms python /usr/src/app/manage.py createsuperuser --email admin@dabao.com --username admin
 
+# Get everything up!
+docker-compose up -d
+
 # Backup Database
 docker-compose run --rm dabao-cms python /usr/src/app/manage.py dumpdata auth django_celery_beat cms
 
-# set bucket permissions
+# set bucket permissions in MinIO
 mc policy -r set download myminio/docker-images
 mc policy -r set download myminio/pivnet-products
 
