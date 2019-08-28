@@ -22,13 +22,15 @@ git clone https://github.com/yannhowe/dabao.git
 mv .env.example .env
 
 # Initialise database & create admin user
-docker-compose run --rm dabao-cms python /usr/src/app/manage.py makemigrations
-docker-compose run --rm dabao-cms python /usr/src/app/manage.py migrate
-docker-compose run --rm dabao-cms python /usr/src/app/manage.py loaddata initial_data.json
-docker-compose run --rm dabao-cms python /usr/src/app/manage.py createsuperuser --email admin@dabao.com --username admin
+docker-compose run --rm dabao-cms python /usr/src/app/manage.py makemigrations && docker-compose run --rm dabao-cms python /usr/src/app/manage.py migrate && docker-compose run --rm dabao-cms python /usr/src/app/manage.py loaddata initial_data.json && docker-compose run --rm dabao-cms python /usr/src/app/manage.py createsuperuser --email admin@dabao.com --username admin
 
 # Get everything up!
 docker-compose up -d
+
+# Open your browser:
+# Whats being downloaded? - http://localhost
+# Admin Panel - http://localhost/admin/
+# MinIO endpoint - http://localhost/minio/
 
 # Backup Database
 docker-compose run --rm dabao-cms python /usr/src/app/manage.py dumpdata auth django_celery_beat cms
