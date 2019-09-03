@@ -106,5 +106,4 @@ venv.bak/
 # Project Stuff
 dabao-pcf/product-files
 minio
-static
 .DS_Store
