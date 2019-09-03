@@ -8,7 +8,7 @@ services:
     volumes:
       - "dabao-cms-static:/usr/src/app/static"
     ports:
-      - "80:80"
+      - "8080:80"
 
   dabao-cms:
     restart: always
@@ -50,9 +50,10 @@ services:
       - dabao-cms
       - redis
     volumes:
+      - dabao-cms:/usr/src/app
       - /var/run/docker.sock:/var/run/docker.sock
     restart: on-failure
-    command: sh -c "cd /usr/src/app/ && celery -A dabao worker -l info --scheduler django"
+    command: sh -c "cd /usr/src/app/ && celery -A dabao worker -l info"
 
   celery_beat:
     build: ./dabao
@@ -60,8 +61,10 @@ services:
     depends_on:
       - dabao-cms
       - redis
+    volumes:
+      - dabao-cms:/usr/src/app
     restart: on-failure
-    command: sh -c "cd /usr/src/app/ && celery -A dabao beat -l info --scheduler django"
+    command: sh -c "cd /usr/src/app/ && celery -A dabao beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
 
 volumes:
   dabao-cms:
