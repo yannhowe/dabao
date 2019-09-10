@@ -38,7 +38,7 @@ def download_docker_images(docker_session, minio_session, docker_bucket_name, do
     logging.info("docker_images_to_download: %s" % docker_images_to_download)
         
     for docker_image_to_download in docker_images_to_download:
-        docker_image_filename = docker_image_to_download.replace(':', '_') + '.tar'
+        docker_image_filename = docker_image_to_download.replace(':', '_').replace('/', '+') + '.tar'
         docker_image_minio_path = docker_bucket_name+"/"+docker_image_filename
         docker_image_local_path = "./downloads/"+docker_image_minio_path
         docker_image_local_directory = os.path.dirname(docker_image_local_path) # Use the aws object key as path
