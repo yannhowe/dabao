@@ -111,7 +111,7 @@
     "fields": {
         "name": "dabao docker",
         "task": "cms.tasks.task_dabao_docker",
-        "interval": 2,
+        "interval": 1,
         "crontab": null,
         "solar": null,
         "clocked": null,

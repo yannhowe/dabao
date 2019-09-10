@@ -7,7 +7,7 @@ class DockerImage(models.Model):
         return self.image + ":" + self.tag
 
     image = models.CharField(max_length=200)
-    tag = models.CharField(max_length=128, blank=True, help_text="Comma seperated tags supported")
+    tag = models.CharField(max_length=128, help_text="Comma seperated tags supported, doesn't support no tag because it will pull all tags")
     downloaded = models.BooleanField(default=False)
 
 

@@ -24,7 +24,7 @@ minio_session = Minio(os.getenv('MINIO_HOST', 'Token Not found'),
 
 docker_bucket_name = os.getenv('DOCKER_BUCKET_NAME', "docker-images")
 docker_session = docker.from_env()
-#docker_session.login(username="", password="") #TODO
+docker_session.login(username=os.getenv('DOCKERHUB_USERNAME', 'Token Not found'), password=os.getenv('DOCKERHUB_PASSWORD', 'Token Not found'), reauth=True)
 
 download_destination = os.getenv('DOWNLOAD_DESTINATION', "local")
 pivnet_bucket = os.getenv('PIVNET_BUCKET_NAME', "pivnet-products")

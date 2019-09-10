@@ -8,7 +8,7 @@
 
     {% if docker_image_list %}
     <h2>Docker Images</h2>
-    <ul>
+    <ul class="list-unstyled">
         {% for object in docker_image_list %}
             <li><a href="#">{{object}}</a></li>
         {% endfor %}
@@ -17,7 +17,7 @@
 
     {% if pivotal_product_list %}
     <h2>Pivotal Products</h2>
-    <ul>
+    <ul class="list-unstyled">
         {% for object in pivotal_product_list %}
             <li><a href="#">{{ object }}</a></li>
         {% endfor %}
