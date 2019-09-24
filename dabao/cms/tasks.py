@@ -24,7 +24,7 @@ minio_session = Minio(os.getenv('MINIO_HOST', 'Token Not found'),
 
 docker_bucket_name = os.getenv('DOCKER_BUCKET_NAME', "docker-images")
 docker_session = docker.from_env()
-docker_session.login(username=os.getenv('DOCKERHUB_USERNAME', 'Token Not found'), password=os.getenv('DOCKERHUB_PASSWORD', 'Token Not found'), reauth=True)
+#docker_session.login(username=os.getenv('DOCKERHUB_USERNAME', 'Token Not found'), password=os.getenv('DOCKERHUB_PASSWORD', 'Token Not found'), reauth=True)
 
 download_destination = os.getenv('DOWNLOAD_DESTINATION', "local")
 pivnet_bucket = os.getenv('PIVNET_BUCKET_NAME', "pivnet-products")
@@ -44,12 +44,12 @@ exclude_these_strings = [
 
 @shared_task
 def task_dabao_docker():
-    print("task_dabao_docker!")
+    logging.info("task_dabao_docker!")
     download_list=DockerImage.objects.values_list('image', 'tag')
     dabao_docker.download_docker_images(docker_session, minio_session, docker_bucket_name, download_list, download_destination)
 
 @shared_task
 def task_dabao_pcf():
-    print("task_dabao_pcf!")
+    logging.info("task_dabao_pcf!")
     products=PivotalProduct.objects.values_list('product', flat=True)
     dabao_pcf.download_pcf_assets(minio_session, products, download_destination, pivnet_bucket, dryrun)
