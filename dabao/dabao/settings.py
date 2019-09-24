@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # libraries
     'celery',
     'django_celery_beat',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [

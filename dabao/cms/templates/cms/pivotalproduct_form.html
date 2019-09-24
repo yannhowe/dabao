@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block title %}Pivotal Product - Dabao CMS{% endblock %}
+
+{% block content %}
+
+    <h1>Add Pivotal Product</h1>
+    <div class="col-6">
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <a href="/" class="btn btn-outline-danger" role="button" aria-disabled="true">Cancel</a>
+                <button type="submit" class="btn btn-primary">Dabao!</button>
+            {% endbuttons %}
+        </form>
+
+    <p><strong>Product List:</strong> a9s-elasticsearch, a9s-logme, a9s-mongodb, a9s-mysql, a9s-postgresql, a9s-rabbitmq, a9s-redis, aerospike-ee-on-demand, altoros-aws-s3, altoros-cassandra, altoros-elasticsearch, altoros-heartbeat, altoros-jenkins, altoros-log-search, apigee-edge-for-pcf-service-broker, apigee-edge-installer, apm, appdynamics-analytics, appdynamics-platform, aquasec, aws-services, azure-service-broker, big-data, binary-buildpack, bitdefender-endpoint, black-duck-service-broker, blue-medora-nozzle, boomi-data-services, boomi-data-services-pks, buildpack-extensions, buildpack_suite, buildpacks, cloudbees-core, contrast-security-service-broker, control-tower, credhub-service-broker, crunchy-postgresql, cyberark-conjur, datadog, datadog-application-monitoring, datastax-enterprise-service-broker, dotnet-core-buildpack, dynatrace, dynatrace-fullstack-addon, ecs-service-broker, elastic-runtime, essential_pks, evolven-change-analytics, forgerock, gcp-service-broker, gcp-stackdriver-nozzle, go-buildpack, gpdb-data-copy, greenplum-for-kubernetes, harbor-container-registry, hazelcast-jet, hazelcast-pcf, heimdall-database-proxy, hwc-buildpack, ibm-mq-advanced, ibm-websphere-liberty, instana-microservices-application-monitoring, java-buildpack, microsoft-azure-log-analytics-nozzle, minio, minio-greenplum, minio-internal-blobstore, mongodb-enterprise-service, neo4j-enterprise, new-relic-dotnet-buildpack, nginx-buildpack, nodejs-buildpack, nr-firehose-nozzle, on-demand-services-sdk, ops-manager, p-apache-http-server, p-appdynamics, p-bosh-backup-and-restore, p-clamav-addon, p-cloudcache, p-compliance-scanner, p-concourse, p-dataflow, p-event-alerts, p-fim-addon, p-healthwatch, p-ipsec-addon, p-isolation-segment, p-metrics-forwarder, p-mysql, p-new-relic, p-rabbitmq, p-redis, p-scheduler, p-spring-cloud-services, p-windows-runtime, pagerduty-service-broker, pas-for-kubernetes, pas-windows, pcf-app-autoscaler, pcf-automation, pcf-services, pcf-services-sdk, pcfdev, pega, php-buildpack, pivotal-app-suite, pivotal-cf, pivotal-container-service, pivotal-function-service, pivotal-gemfire, pivotal-gpdb, pivotal-gpdb-backup-restore, pivotal-hd, pivotal-hdb, pivotal-hdp, pivotal-mysql, pivotal-openjdk, pivotal-postgres, pivotal-rabbitmq, pivotal-spring-runtime, pivotal-tcserver, pivotal-telemetry-collector, pivotal_single_sign-on_service, platform-automation, push-notification-service, python-buildpack, r-buildpack, re-tile-manager, redis-enterprise-pack, redis-enterprise-pack-service-broker, reliability_view_pcf, riverbed-appinternals, ruby-buildpack, service-backups-sdk, service-metrics-sdk, signal-sciences-service-broker, smb-volume-service, snappydata-service, snyk, snyk-service-broker, solace-pubsub, splunk-nozzle, staticfile-buildpack, stemcells, stemcells-ubuntu-xenial, stemcells-windows-server, sumologic-nozzle, synopsys-seeker, tc-server-3x-core, tc-server-3x-runtimes, tc-server-3x-templates, tc-server-4x-core, tc-server-4x-runtimes, tc-server-4x-templates, tc-server-buildpack, tibco-businessworks, twistlock, vmware-nsx-t, vormetric-transparent-encryption, wavefront-nozzle, wso2-api-manager, xcrypt-archive, yugabyte-db, zettaset-xcrypt</p>
+    </div>
+
+{% endblock %}

@@ -10,6 +10,8 @@ class DockerImage(models.Model):
     tag = models.CharField(max_length=128, help_text="Comma seperated tags supported, doesn't support no tag because it will pull all tags")
     downloaded = models.BooleanField(default=False)
 
+    def get_absolute_url(self):
+        return reverse('DashboardView')
 
 class PivotalProduct(models.Model):
     def __str__(self):
@@ -20,3 +22,6 @@ class PivotalProduct(models.Model):
 
     product = models.CharField(max_length=200, help_text=', '.join(PivotalProductList))
     downloaded = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse('DashboardView')

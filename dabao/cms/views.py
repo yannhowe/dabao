@@ -1,5 +1,6 @@
-from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.urls import reverse_lazy
 
 from .models import DockerImage, PivotalProduct
 
@@ -29,9 +30,37 @@ class DashboardView(ListView):
         context['pivotal_product_list'] = pivotal_product_list
 
         return context
- 
+    
 class DabaoView(TemplateView):
 
     template_name = "dabao.html"
 
-    
+
+class DockerImageCreate(CreateView):
+    model = DockerImage
+    fields = ['image', 'tag']
+    success_url = reverse_lazy('dashboard')
+
+class DockerImageUpdate(UpdateView):
+    model = DockerImage
+    fields = ['image', 'tag']
+    success_url = reverse_lazy('dashboard')
+
+class DockerImageDelete(DeleteView):
+    model = DockerImage
+    success_url = reverse_lazy('dashboard')
+
+
+class PivotalProductCreate(CreateView):
+    model = PivotalProduct
+    fields = ['product']
+    success_url = reverse_lazy('dashboard')
+
+class PivotalProductUpdate(UpdateView):
+    model = PivotalProduct
+    fields = ['product']
+    success_url = reverse_lazy('dashboard')
+
+class PivotalProductDelete(DeleteView):
+    model = PivotalProduct
+    success_url = reverse_lazy('dashboard')

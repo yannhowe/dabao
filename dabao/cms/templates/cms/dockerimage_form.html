@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block title %}Docker Image - Dabao CMS{% endblock %}
+
+{% block content %}
+
+    <h1>Add Docker Image</h1>
+    <p>You can comma-separate multiple tags.</p>
+    <div class="col-6">
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <a href="/" class="btn btn-outline-danger" role="button" aria-disabled="true">Cancel</a>
+                <button type="submit" class="btn btn-primary">Dabao!</button>
+            {% endbuttons %}
+        </form>
+    </div>
+
+{% endblock %}

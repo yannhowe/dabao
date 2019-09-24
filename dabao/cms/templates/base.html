@@ -8,13 +8,21 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{% static "bootstrap.min.css" %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="{% static "font/css/open-iconic-bootstrap.min.css" %}" rel="stylesheet">
         <title>{% block title %}Title of the document{% endblock %}</title>
     </head> 
-    <body class="text-center">
-        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+            <div class="container">
+                <a class="navbar-brand" href="/">打包 - <small>stuff for your offline environment</small></a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+
         {% block content %}Content{% endblock %}
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
         <script src="{% static "jquery-3.3.1.slim.min.js" %}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="{% static "popper.min.js" %}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
