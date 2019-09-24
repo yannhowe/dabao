@@ -18,6 +18,7 @@ six = "*"
 minio = "*"
 django-celery-beat = "*"
 gunicorn = "*"
+django-bootstrap4 = "*"
 
 [requires]
 python_version = "3.7"

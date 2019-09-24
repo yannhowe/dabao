@@ -1,27 +1,25 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Dashboard - Dabao CMS{% endblock %}
 
-{% block content %}
-
-    <h1>打包</h1>
-    <p class="font-italic">This is just a list of things I'm supposed to dabao, I don't really track what has been downloaded and where it is along the pipeline.</p>
-
+{% block content %}    
     {% if docker_image_list %}
-    <h2>Docker Images</h2>
-    <ul class="list-unstyled">
+    <h2>Docker Images <small><a href="/dockerimage/add/"><span class="oi oi-plus"></span></a></small></h2>
+    <ul>
         {% for object in docker_image_list %}
-            <li><a href="#">{{object}}</a></li>
+            <li><a href="/dockerimage/{{object.pk}}">{{object}}</a> <a href="/dockerimage/{{object.pk}}/delete/"><span class="oi oi-trash" style="color:#CC0000"></span></a></li>
         {% endfor %}
     </ul>
     {% endif %}
-
+    <br/>
     {% if pivotal_product_list %}
-    <h2>Pivotal Products</h2>
-    <ul class="list-unstyled">
+    <h2>Pivotal Products <small><a href="/pivotalproduct/add/"><span class="oi oi-plus"></span></a></small></h2>
+    <ul>
         {% for object in pivotal_product_list %}
-            <li><a href="#">{{ object }}</a></li>
+            <li><a href="/pivotalproduct/{{object.pk}}">{{object}}</a> <a href="/dockerimage/{{object.pk}}/delete/"><span class="oi oi-trash" style="color:#CC0000"></span></a></li>
         {% endfor %}
     </ul>
     {% endif %}
+    <p class="font-italic mt-4 small"><strong>Note:</strong> This is just a list of things I'm supposed to dabao to <a href="/minio/">object storage</a>, I don't really track what has been downloaded or where it is along the pipeline.</p>
 
 {% endblock %}
