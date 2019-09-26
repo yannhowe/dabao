@@ -109,3 +109,4 @@ minio
 .DS_Store
 migrations
 celerybeat.pid
+tmp

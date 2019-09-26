@@ -8,6 +8,7 @@ import os
 import logging
 
 from .downloaders import dabao_docker, dabao_pcf
+from .uploaders import lelong_docker
 from .models import DockerImage, PivotalProduct
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
@@ -24,8 +25,10 @@ minio_session = Minio(os.getenv('MINIO_HOST', 'Token Not found'),
 
 docker_bucket_name = os.getenv('DOCKER_BUCKET_NAME', "docker-images")
 docker_session = docker.from_env()
+docker_session_low_level_api = docker.APIClient(base_url='unix://var/run/docker.sock')
 #docker_session.login(username=os.getenv('DOCKERHUB_USERNAME', 'Token Not found'), password=os.getenv('DOCKERHUB_PASSWORD', 'Token Not found'), reauth=True)
 
+target_docker_registry = os.getenv('TARGET_DOCKER_REGISTRY', 'Token Not found')
 download_destination = os.getenv('DOWNLOAD_DESTINATION', "local")
 pivnet_bucket = os.getenv('PIVNET_BUCKET_NAME', "pivnet-products")
 exclude_these_strings = [
@@ -47,6 +50,11 @@ def task_dabao_docker():
     logging.info("task_dabao_docker!")
     download_list=DockerImage.objects.values_list('image', 'tag')
     dabao_docker.download_docker_images(docker_session, minio_session, docker_bucket_name, download_list, download_destination)
+
+@shared_task
+def task_lelong_docker():
+    logging.info("task_lelong_docker!")
+    lelong_docker.upload_docker_images(docker_session, docker_session_low_level_api, minio_session, docker_bucket_name, target_docker_registry)
 
 @shared_task
 def task_dabao_pcf():
