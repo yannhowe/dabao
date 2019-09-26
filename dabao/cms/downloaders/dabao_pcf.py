@@ -9,14 +9,14 @@ from minio import Minio
 from minio.error import (ResponseError, BucketAlreadyOwnedByYou, BucketAlreadyExists, SignatureDoesNotMatch, NoSuchKey)
 
 
-def download_pcf_assets(minioClient, products, download_destination, pivnet_bucket, dryrun):
+def download_pcf_assets(minio_session, products, download_destination, pivnet_bucket, dryrun):
 
     exclude_these_strings = []
 
     try:
-        if not minioClient.bucket_exists(pivnet_bucket):
+        if not minio_session.bucket_exists(pivnet_bucket):
             try:
-                minioClient.make_bucket(pivnet_bucket)
+                minio_session.make_bucket(pivnet_bucket)
             except ResponseError as err:
                 logging.info(err)
     except ResponseError as err:
@@ -82,7 +82,7 @@ def download_pcf_assets(minioClient, products, download_destination, pivnet_buck
                 else: # Download files
                     if download_destination == "minio": # Check MinIO to see if already downloaded
                         try:
-                            minioClient.stat_object(pivnet_bucket, product_path)
+                            minio_session.stat_object(pivnet_bucket, product_path)
                             object_exists = True
                         except ResponseError as err:
                             logging.info(err)
@@ -111,7 +111,7 @@ def download_pcf_assets(minioClient, products, download_destination, pivnet_buck
                     if not object_exists and download_destination == "minio": # Upload to Minio
                         logging.info("uploading to bucket %s - %s" % (pivnet_bucket, product_directory))
                         try:
-                            logging.info(minioClient.fput_object(pivnet_bucket, product_path, product_local_path))
+                            logging.info(minio_session.fput_object(pivnet_bucket, product_path, product_local_path))
                         except ResponseError as err:
                             logging.info(err)
                         # Delete from local filesystem
