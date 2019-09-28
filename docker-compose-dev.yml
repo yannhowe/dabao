@@ -12,7 +12,7 @@ services:
 
   dabao-cms:
     restart: always
-    image: yannhowe/dabao:0.1
+    build: ./dabao
     volumes:
       # Production
       #- dabao-cms:/usr/src/app
@@ -22,7 +22,7 @@ services:
     command: /usr/local/bin/gunicorn dabao.wsgi:application -w 2 -b :8000 --chdir /usr/src/app
 
   dabao-cms-static:
-    image: yannhowe/dabao:0.1
+    build: ./dabao
     volumes:
       - "dabao-cms-static:/usr/src/app/static"
     env_file: .env
@@ -44,7 +44,7 @@ services:
     command: server /data
 
   celery_worker:
-    image: yannhowe/dabao:0.1
+    build: ./dabao
     env_file: .env
     depends_on:
       - dabao-cms
@@ -59,7 +59,7 @@ services:
     command: sh -c "cd /usr/src/app/ && celery -A dabao worker -l info"
 
   celery_beat:
-    image: yannhowe/dabao:0.1
+    build: ./dabao
     env_file: .env
     depends_on:
       - dabao-cms
