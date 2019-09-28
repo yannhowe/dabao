@@ -9,14 +9,14 @@ from minio import Minio
 from minio.error import (ResponseError, BucketAlreadyOwnedByYou, BucketAlreadyExists, SignatureDoesNotMatch, NoSuchKey)
 
 
-def download_pcf_assets(minio_session, products, download_destination, pivnet_bucket, dryrun):
+def download_pcf_assets(minio_session, products, download_destination, pivnet_bucket_name, dryrun):
 
     exclude_these_strings = []
 
     try:
-        if not minio_session.bucket_exists(pivnet_bucket):
+        if not minio_session.bucket_exists(pivnet_bucket_name):
             try:
-                minio_session.make_bucket(pivnet_bucket)
+                minio_session.make_bucket(pivnet_bucket_name)
             except ResponseError as err:
                 logging.info(err)
     except ResponseError as err:
@@ -70,7 +70,7 @@ def download_pcf_assets(minio_session, products, download_destination, pivnet_bu
                 logging.info("excluding %s" % product_file['aws_object_key'])
             else:
                 product_path = product_file['aws_object_key']
-                product_minio_path = pivnet_bucket+"/"+product_path
+                product_minio_path = pivnet_bucket_name+"/"+product_path
                 product_local_path = "./downloads/"+product_minio_path
                 product_directory = os.path.dirname(product_local_path) # Use the aws object key as path
                 try:
@@ -82,7 +82,7 @@ def download_pcf_assets(minio_session, products, download_destination, pivnet_bu
                 else: # Download files
                     if download_destination == "minio": # Check MinIO to see if already downloaded
                         try:
-                            minio_session.stat_object(pivnet_bucket, product_path)
+                            minio_session.stat_object(pivnet_bucket_name, product_path)
                             object_exists = True
                         except ResponseError as err:
                             logging.info(err)
@@ -92,7 +92,7 @@ def download_pcf_assets(minio_session, products, download_destination, pivnet_bu
                             object_exists = False
 
                     if object_exists:
-                        logging.info("object exists in bucket %s - %s" % (pivnet_bucket, product_path))
+                        logging.info("object exists in bucket %s - %s" % (pivnet_bucket_name, product_path))
                         if Path(product_minio_path).is_file():
                             # Delete from local filesystem
                             logging.info("deleting file %s" % product_local_path)
@@ -109,9 +109,9 @@ def download_pcf_assets(minio_session, products, download_destination, pivnet_bu
                             open(product_local_path, 'wb').write(r_downloadfile.content) # write to file
 
                     if not object_exists and download_destination == "minio": # Upload to Minio
-                        logging.info("uploading to bucket %s - %s" % (pivnet_bucket, product_directory))
+                        logging.info("uploading to bucket %s - %s" % (pivnet_bucket_name, product_directory))
                         try:
-                            logging.info(minio_session.fput_object(pivnet_bucket, product_path, product_local_path))
+                            logging.info(minio_session.fput_object(pivnet_bucket_name, product_path, product_local_path))
                         except ResponseError as err:
                             logging.info(err)
                         # Delete from local filesystem
