@@ -1,9 +1,8 @@
 # 打包 (dǎ bāo)
 打包 (dǎ bāo) internet resources for your air-gapped environment.
 
-:white_check_mark: GUI-based
-
-:white_check_mark: (Reasonably) Easy Setup
+- [x] GUI-based
+- [x] (Reasonably) Easy Setup
 
 Supports:
 - [x]  [Pivotal Network](https://network.pivotal.io/) Stemcells and Releases
@@ -22,7 +21,10 @@ git clone https://github.com/yannhowe/dabao.git
 mv .env.example .env
 
 # Initialise database & create admin user
-docker-compose run --rm dabao-cms python /usr/src/app/manage.py makemigrations && docker-compose run --rm dabao-cms python /usr/src/app/manage.py migrate && docker-compose run --rm dabao-cms python /usr/src/app/manage.py loaddata initial_data.json && docker-compose run --rm dabao-cms python /usr/src/app/manage.py createsuperuser --email admin@dabao.com --username admin
+docker-compose run --rm dabao-cms python /usr/src/app/manage.py makemigrations
+docker-compose run --rm dabao-cms python /usr/src/app/manage.py migrate
+docker-compose run --rm dabao-cms python /usr/src/app/manage.py loaddata initial_data.json
+docker-compose run --rm dabao-cms python /usr/src/app/manage.py createsuperuser --email admin@dabao.com --username admin
 
 # Get everything up!
 docker-compose up -d
