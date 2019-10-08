@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block title %}Docker Image - Dabao CMS{% endblock %}
+
+{% block content %}
+
+    <h1>Delete Docker Image</h1>
+    <div class="col-6">
+        <form method="post">{% csrf_token %}
+            <p>Are you sure you want to delete "{{ object }}"?</p>
+            <a href="/" class="btn btn-outline-primary" role="button" aria-disabled="true">No la</a>
+            <button type="submit" class="btn btn-danger">Delete!</button>
+        </form>
+    </div>
+
+{% endblock %}
