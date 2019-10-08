@@ -44,6 +44,13 @@ mc policy -r set download myminio/pivnet-products
 # MC Mirror the bucket to your server, thumbdrive, diode, wherever..
 mc mirror --watch  myminio/docker-images/ docker-images
 mc mirror --watch  myminio/pivnet-products/ pivnet-products
+
+# Initialise database & create admin user for dev
+docker-compose -f docker-compose-dev.yml run --rm dabao-cms python /usr/src/app/manage.py makemigrations
+docker-compose -f docker-compose-dev.yml run --rm dabao-cms python /usr/src/app/manage.py migrate
+docker-compose -f docker-compose-dev.yml run --rm dabao-cms python /usr/src/app/manage.py loaddata initial_data.json
+docker-compose -f docker-compose-dev.yml run --rm dabao-cms python /usr/src/app/manage.py createsuperuser --email admin@dabao.com --username admin
+
 ```
 
 # Notes
