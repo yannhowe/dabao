@@ -17,7 +17,7 @@ services:
       # Production
       #- dabao-cms:/usr/src/app
       # Development
-      - ./dabao/:/usr/src/app
+      - ./dabao:/usr/src/app
     env_file: .env
     command: /usr/local/bin/gunicorn dabao.wsgi:application -w 2 -b :8000 --chdir /usr/src/app
 
@@ -53,7 +53,7 @@ services:
       # Production
       #- dabao-cms:/usr/src/app
       # Development
-      - ./dabao/:/usr/src/app
+      - ./dabao:/usr/src/app
       - /var/run/docker.sock:/var/run/docker.sock
     restart: on-failure
     command: sh -c "cd /usr/src/app/ && celery -A dabao worker -l info"
@@ -68,7 +68,7 @@ services:
       # Production
       #- dabao-cms:/usr/src/app
       # Development
-      - ./dabao/:/usr/src/app
+      - ./dabao:/usr/src/app
     restart: on-failure
     command: sh -c "cd /usr/src/app/ && celery -A dabao beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
 

@@ -46,6 +46,7 @@ def upload_docker_images(docker_session, docker_session_low_level_api, minio_ses
 
                 # Push image to target registry
                 logging.info("docker push %s" % image)
+                docker_session_low_level_api.login(registry="https://"+os.getenv('LELONG_DOCKER_REGISTRY', 'Token Not found'), username=os.getenv('LELONG_DOCKER_USER', 'Token Not found'), password=os.getenv('LELONG_DOCKER_PASSWORD', 'Token Not found'), reauth=True)
                 logging.info(docker_session_low_level_api.tag(image, target_docker_registry+"/"+image))
                 logging.info(docker_session_low_level_api.push(target_docker_registry+"/"+image))
     else:

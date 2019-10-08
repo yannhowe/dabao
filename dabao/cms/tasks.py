@@ -31,7 +31,6 @@ lelong_minio_session = Minio(os.getenv('LELONG_MINIO_HOST', 'Token Not found'),
 docker_bucket_name = os.getenv('DOCKER_BUCKET_NAME', "docker-images")
 docker_session = docker.from_env()
 docker_session_low_level_api = docker.APIClient(base_url='unix://var/run/docker.sock')
-#docker_session.login(username=os.getenv('DOCKERHUB_USERNAME', 'Token Not found'), password=os.getenv('DOCKERHUB_PASSWORD', 'Token Not found'), reauth=True)
 
 target_docker_registry = os.getenv('LELONG_DOCKER_REGISTRY', 'Token Not found')
 download_destination = os.getenv('DOWNLOAD_DESTINATION', "local")
