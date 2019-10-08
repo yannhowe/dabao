@@ -44,8 +44,8 @@ def download_pcf_assets(minio_session, products, download_destination, pivnet_bu
     stemcells_ubuntu_xenial_release_list = requests.get("https://network.pivotal.io/api/v2/products/stemcells-ubuntu-xenial/releases", allow_redirects=True).json()
     for release in stemcells_ubuntu_xenial_release_list["releases"]:
         if "250" in release["version"]:
-            #stemcell_urls.append(release["_links"]["product_files"]["href"])
-            pass
+            stemcell_urls.append(release["_links"]["product_files"]["href"])
+            #pass
 
     try:
         product_urls.append(stemcell_urls[0])
