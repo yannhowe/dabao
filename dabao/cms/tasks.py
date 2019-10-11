@@ -35,18 +35,25 @@ docker_session_low_level_api = docker.APIClient(base_url='unix://var/run/docker.
 target_docker_registry = os.getenv('LELONG_DOCKER_REGISTRY', 'Token Not found')
 download_destination = os.getenv('DOWNLOAD_DESTINATION', "local")
 pivnet_bucket = os.getenv('PIVNET_BUCKET_NAME', "pivnet-products")
+    
+include_stemcell_versions = [
+    '250',
+    '315',
+    '456'
+]
+
 exclude_these_strings = [
-'light-bosh-stemcell-', 
-'azure', 
-'openstack', 
-'vcloud', 
-'.txt', 
-'for GCP', 
-'for Openstack', 
-'for AWS', 
-'for Azure', 
-'-aws-', 
-'-gcp-',
+    'light-bosh-stemcell-', 
+    'azure', 
+    'openstack', 
+    'vcloud', 
+    '.txt', 
+    'for GCP', 
+    'for Openstack', 
+    'for AWS', 
+    'for Azure', 
+    '-aws-', 
+    '-gcp-',
 ]
 
 @shared_task
@@ -59,7 +66,7 @@ def task_dabao_docker():
 def task_dabao_pcf():
     logging.info("task_dabao_pcf!")
     products=PivotalProduct.objects.values_list('product', flat=True)
-    dabao_pcf.download_pcf_assets(dabao_minio_session, products, download_destination, pivnet_bucket, dryrun)
+    dabao_pcf.download_pcf_assets(dabao_minio_session, products, download_destination, pivnet_bucket, include_stemcell_versions, exclude_these_strings, dryrun)
 
 @shared_task
 def task_lelong_docker():

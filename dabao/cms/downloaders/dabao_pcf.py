@@ -9,9 +9,7 @@ from minio import Minio
 from minio.error import (ResponseError, BucketAlreadyOwnedByYou, BucketAlreadyExists, SignatureDoesNotMatch, NoSuchKey)
 
 
-def download_pcf_assets(minio_session, products, download_destination, pivnet_bucket_name, dryrun):
-
-    exclude_these_strings = []
+def download_pcf_assets(minio_session, products, download_destination, pivnet_bucket_name, include_stemcell_versions, exclude_these_strings, dryrun):
 
     try:
         if not minio_session.bucket_exists(pivnet_bucket_name):
@@ -43,9 +41,8 @@ def download_pcf_assets(minio_session, products, download_destination, pivnet_bu
     # Get stemcells-ubuntu-xenial 250.*
     stemcells_ubuntu_xenial_release_list = requests.get("https://network.pivotal.io/api/v2/products/stemcells-ubuntu-xenial/releases", allow_redirects=True).json()
     for release in stemcells_ubuntu_xenial_release_list["releases"]:
-        if "250" in release["version"]:
+        if any(stemcell_version in release["version"] for stemcell_version in include_stemcell_versions):
             stemcell_urls.append(release["_links"]["product_files"]["href"])
-            #pass
 
     try:
         product_urls.append(stemcell_urls[0])
