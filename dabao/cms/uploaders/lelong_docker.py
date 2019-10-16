@@ -12,6 +12,15 @@ import time
 
 def upload_docker_images(docker_session, docker_session_low_level_api, minio_session, docker_bucket_name, target_docker_registry, dryrun):
 
+    try:
+        minio_session.make_bucket(docker_bucket_name)
+    except BucketAlreadyOwnedByYou as err:
+        pass
+    except BucketAlreadyExists as err:
+        logging.info("Docker bucket already exists in minIO - %s" , docker_bucket_name)
+    except ResponseError as err:
+        raise
+
     # Get list of images from MinIO, for images do
     objects = minio_session.list_objects_v2(docker_bucket_name, recursive=True)
 
