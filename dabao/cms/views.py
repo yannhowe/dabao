@@ -15,7 +15,7 @@ class DashboardView(ListView):
 
         # Docker
         try:
-            docker_image_list = DockerImage.objects.all()
+            docker_image_list = DockerImage.objects.order_by('image')
         except DockerImage.DoesNotExist:
             docker_image_list = None
 
@@ -23,7 +23,7 @@ class DashboardView(ListView):
         
         # Pivotal
         try:
-            pivotal_product_list = PivotalProduct.objects.all()
+            pivotal_product_list = PivotalProduct.objects.order_by('product')
         except PivotalProduct.DoesNotExist:
             pivotal_product_list = None
 
