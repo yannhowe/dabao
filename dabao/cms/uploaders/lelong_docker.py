@@ -10,7 +10,7 @@ import logging
 
 import time
 
-def upload_docker_images(docker_session, docker_session_low_level_api, minio_session, docker_bucket_name, target_docker_registry, dryrun):
+def upload_docker_images(docker_session, minio_session, docker_bucket_name, target_docker_registry, dryrun):
 
     try:
         minio_session.make_bucket(docker_bucket_name)
@@ -49,14 +49,17 @@ def upload_docker_images(docker_session, docker_session_low_level_api, minio_ses
                     logging.error(err) 
 
                 # Load image to host
-                logging.info("docker load %s" % obj.object_name)
+                logging.info("docker load %s" % "./tmp/"+obj.object_name)
                 with open("./tmp/"+obj.object_name, 'rb') as file_data:
-                    docker_session.images.load(file_data)
+                    logging.info(docker_session.images.load(file_data))
 
                 # Push image to target registry
                 logging.info("docker push %s" % image)
-                docker_session_low_level_api.login(registry="https://"+os.getenv('LELONG_DOCKER_REGISTRY', 'Token Not found'), username=os.getenv('LELONG_DOCKER_USER', 'Token Not found'), password=os.getenv('LELONG_DOCKER_PASSWORD', 'Token Not found'), reauth=True)
-                logging.info(docker_session_low_level_api.tag(image, target_docker_registry+"/"+image))
-                logging.info(docker_session_low_level_api.push(target_docker_registry+"/"+image))
+                logging.info(docker_session.images.get(image).tag(target_docker_registry+"/"+image))
+                logging.info(docker_session.login(registry="https://"+os.getenv('LELONG_DOCKER_REGISTRY', 'Token Not found'), username=os.getenv('LELONG_DOCKER_USER', 'Token Not found'), password=os.getenv('LELONG_DOCKER_PASSWORD', 'Token Not found'), reauth=True))
+                logging.info(docker_session.images.push(target_docker_registry+"/"+image))
+
+                logging.info("Deleting %s" % "./tmp/"+obj.object_name)
+                os.remove("./tmp/"+obj.object_name)
     else:
-        logging.info("No docker images to upload")
+         logging.info("No docker images to upload")

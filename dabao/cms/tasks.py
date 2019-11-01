@@ -30,7 +30,8 @@ lelong_minio_session = Minio(os.getenv('LELONG_MINIO_HOST', 'Token Not found'),
 
 docker_bucket_name = os.getenv('DOCKER_BUCKET_NAME', "docker-images")
 docker_session = docker.from_env()
-docker_session_low_level_api = docker.APIClient(base_url='unix://var/run/docker.sock')
+#docker_session.login(registry="https://"+os.getenv('LELONG_DOCKER_REGISTRY', 'Token Not found'), username=os.getenv('LELONG_DOCKER_USER', 'Token Not found'), password=os.getenv('LELONG_DOCKER_PASSWORD', 'Token Not found'), reauth=True)
+#docker_session_low_level_api = docker.APIClient(base_url='unix://var/run/docker.sock')
 
 target_docker_registry = os.getenv('LELONG_DOCKER_REGISTRY', 'Token Not found')
 download_destination = os.getenv('DOWNLOAD_DESTINATION', "local")
@@ -71,4 +72,4 @@ def task_dabao_pcf():
 @shared_task
 def task_lelong_docker():
     logging.info("task_lelong_docker!")
-    lelong_docker.upload_docker_images(docker_session, docker_session_low_level_api, lelong_minio_session, docker_bucket_name, target_docker_registry, dryrun)
+    lelong_docker.upload_docker_images(docker_session, lelong_minio_session, docker_bucket_name, target_docker_registry, dryrun)
