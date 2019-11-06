@@ -56,7 +56,7 @@ def upload_docker_images(docker_session, minio_session, docker_bucket_name, targ
                 # Push image to target registry
                 logging.info("docker push %s" % image)
                 logging.info(docker_session.images.get(image).tag(target_docker_registry+"/"+image))
-                logging.info(docker_session.login(registry="https://"+os.getenv('LELONG_DOCKER_REGISTRY', 'Token Not found'), username=os.getenv('LELONG_DOCKER_USER', 'Token Not found'), password=os.getenv('LELONG_DOCKER_PASSWORD', 'Token Not found'), reauth=True))
+                #logging.info(docker_session.login(registry="https://"+os.getenv('LELONG_DOCKER_REGISTRY', 'Token Not found'), username=os.getenv('LELONG_DOCKER_USER', 'Token Not found'), password=os.getenv('LELONG_DOCKER_PASSWORD', 'Token Not found'), reauth=True))
                 logging.info(docker_session.images.push(target_docker_registry+"/"+image))
 
                 logging.info("Deleting %s" % "./tmp/"+obj.object_name)
