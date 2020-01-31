@@ -10,6 +10,60 @@ import logging
 
 import time
 
+
+
+def download_docker_image(docker_image_to_download):
+
+    docker_session = docker.from_env()
+    docker_bucket_name = os.getenv('DOCKER_BUCKET_NAME', "docker-images")
+
+    dabao_minio_session = Minio(os.getenv('DABAO_MINIO_HOST', 'Token Not found'),
+        access_key=os.getenv('DABAO_MINIO_ACCESS_KEY', 'Token Not found'),
+        secret_key=os.getenv('DABAO_MINIO_SECRET_KEY', 'Token Not found'),
+        secure=False)
+
+    logging.info("Processing - %s" % docker_image_to_download)
+
+    docker_image_filename = docker_image_to_download.replace(':', '_').replace('/', '+') + '.tar'
+    docker_image_local_path = "./downloads/"+docker_bucket_name+"/"+docker_image_filename
+    docker_image_local_directory = os.path.dirname(docker_image_local_path) # Use the aws object key as path
+    
+    # Pull image to system
+    logging.info("Pulling %s" % docker_image_to_download)
+    try:
+        docker_session.login(registry="https://index.docker.io/v1/", username=os.getenv('DOCKERHUB_USERNAME', 'Token Not found'), password=os.getenv('DOCKERHUB_PASSWORD', 'Token Not found'), reauth=True)
+        docker_session.images.pull(docker_image_to_download)
+    except (ImageNotFound, APIError) as err:
+        logging.error("Problem pulling image: %s - %s" % (docker_image_to_download , err))
+        continue
+
+    try:
+        os.makedirs(docker_image_local_directory, exist_ok=True) # create any directories needed
+    except FileExistsError:
+        logging.info("directory already exists %s" % docker_image_local_directory)
+    
+    logging.info("saving image to: %s" % docker_image_local_path)
+    f = open(docker_image_local_path, 'wb')
+    for chunk in docker_session.images.get(docker_image_to_download).save():
+        f.write(chunk)
+    file_size = os.fstat(f.fileno()).st_size
+    f.close()
+
+    # Upload docker image to minIO
+    try:
+        file_data = open(docker_image_local_path, 'rb')
+        file_stat = os.stat(docker_image_local_path)
+
+        logging.info("upload to minIO - %s" , docker_image_local_path)
+        logging.info(dabao_minio_session.put_object(docker_bucket_name, docker_image_filename, file_data, file_stat.st_size))
+
+        logging.info("Deleting %s" % docker_image_local_path)
+        os.remove(docker_image_local_path)
+    except (ResponseError, SignatureDoesNotMatch) as err:
+        logging.info("upload docker to minIO failed - %s" , docker_image_local_path)
+        logging.error(err)
+
+
 def download_docker_images(docker_session, minio_session, docker_bucket_name, download_list, download_destination, dryrun):
 
     docker_images_to_download = []
