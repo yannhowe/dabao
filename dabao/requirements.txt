@@ -30,7 +30,7 @@ python-crontab==2.3.9
 python-dateutil==2.8.0
 pytz==2019.2
 redis==3.3.8
-requests==2.22.0
+requests==2.31.0
 six==1.12.0
 soupsieve==1.9.3
 sqlparse==0.3.0
