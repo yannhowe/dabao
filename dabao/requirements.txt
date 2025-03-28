@@ -15,7 +15,7 @@ django-timezone-field==3.0
 docker==4.0.2
 fasteners==0.15
 future==0.17.1
-gunicorn==19.9.0
+gunicorn==23.0.0
 idna==2.8
 importlib-metadata==0.23
 kombu==4.6.4
